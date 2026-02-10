@@ -52,14 +52,14 @@
 
 .sidebar-logo-container:hover .sidebar-logo-icon {
     transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
 }
 
 .sidebar-logo-icon {
     width: 52px;
     height: 52px;
     border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, var(--color-profit), var(--color-primary));
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
     display: flex;
     align-items: center;
     justify-content: center;

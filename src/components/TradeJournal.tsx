@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { Trade } from '../models';
+import { Download } from 'lucide-react';
 import { formatCurrency, formatDate, formatDuration, formatPercent } from '../utils/formatters';
 import { exportToCSV } from '../utils/exportCSV';
 
@@ -110,9 +111,10 @@ export const TradeJournal: React.FC<TradeJournalProps> = ({ trades }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleExportCSV}
-                        style={{ marginLeft: 'auto' }}
+                        style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                     >
-                        📥 Export CSV
+                        <Download size={18} strokeWidth={2.5} />
+                        Export CSV
                     </button>
                 </div>
             </div>
