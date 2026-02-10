@@ -85,40 +85,56 @@ export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
                             {/* Key Metrics Grid */}
                             <div className="metrics-grid">
                                 <MetricCard
-                                    label="Total PnL"
+                                    title="Total PnL"
                                     value={metrics.totalPnl}
                                     format="currency"
+                                    trend={metrics.totalPnl >= 0 ? 'up' : 'down'}
+                                    icon="💰"
                                 />
                                 <MetricCard
-                                    label="Win Rate"
+                                    title="Win Rate"
                                     value={metrics.winRate}
                                     format="percent"
+                                    trend={metrics.winRate >= 0.5 ? 'up' : 'down'}
+                                    icon="🎯"
                                 />
                                 <MetricCard
-                                    label="Total Trades"
+                                    title="Total Trades"
                                     value={metrics.totalTrades}
+                                    trend="neutral"
+                                    icon="📊"
                                 />
                                 <MetricCard
-                                    label="Profit Factor"
+                                    title="Profit Factor"
                                     value={metrics.profitFactor.toFixed(2)}
+                                    trend={metrics.profitFactor > 1 ? 'up' : 'down'}
+                                    icon="⚖️"
                                 />
                                 <MetricCard
-                                    label="ROI"
+                                    title="ROI"
                                     value={metrics.roi}
                                     format="percent"
+                                    trend={metrics.roi >= 0 ? 'up' : 'down'}
+                                    icon="📈"
                                 />
                                 <MetricCard
-                                    label="Max Drawdown"
+                                    title="Max Drawdown"
                                     value={-metrics.maxDrawdownPercentage}
                                     format="percent"
+                                    trend="down"
+                                    icon="📉"
                                 />
                                 <MetricCard
-                                    label="Sharpe Ratio"
-                                    value={metrics.sharpeRatio?.toFixed(2) || '0.00'}
+                                    title="Sharpe Ratio"
+                                    value={metrics.sharpeRatio?.toFixed(2) || 'N/A'}
+                                    trend={metrics.sharpeRatio && metrics.sharpeRatio > 1 ? 'up' : 'neutral'}
+                                    icon="📐"
                                 />
                                 <MetricCard
-                                    label="Risk Score"
-                                    value={riskMetrics.riskScore}
+                                    title="Risk Score"
+                                    value={riskMetrics.riskScore.toFixed(0)}
+                                    trend={riskMetrics.riskScore < 50 ? 'up' : 'down'}
+                                    icon="🎲"
                                 />
                             </div>
 
