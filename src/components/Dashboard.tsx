@@ -1,0 +1,245 @@
+import React, { useState, useMemo } from 'react';
+import type { Trade, Portfolio, PerformanceMetrics } from '../models';
+import { calculatePerformanceMetrics, calculateEquityCurve } from '../core/performanceEngine';
+import { analyzeBySymbol } from '../core/tradeAnalyticsEngine';
+import { getRiskMetrics } from '../core/riskEngine';
+import { MetricCard } from './MetricCard';
+import { EquityCurveChart } from './EquityCurveChart';
+import { TradeJournal } from './TradeJournal';
+import { formatCurrency, formatPercent } from '../utils/formatters';
+
+interface DashboardProps {
+    trades: Trade[];
+    portfolio: Portfolio;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
+    const [activeTab, setActiveTab] = useState<'overview' | 'journal' | 'analytics'>('overview');
+
+    // Calculate all metrics
+    const metrics: PerformanceMetrics = useMemo(() => {
+        return calculatePerformanceMetrics(trades, 10000);
+    }, [trades]);
+
+    const equityCurveData = useMemo(() => {
+        return calculateEquityCurve(trades, 10000);
+    }, [trades]);
+
+    const symbolPerformance = useMemo(() => {
+        return analyzeBySymbol(trades);
+    }, [trades]);
+
+    const riskMetrics = useMemo(() => {
+        return getRiskMetrics(trades, { totalEquity: portfolio.totalEquity });
+    }, [trades, portfolio]);
+
+    return (
+        <div className="dashboard">
+            {/* Sidebar */}
+            <aside className="sidebar">
+                <div className="sidebar-header">
+                    <div className="sidebar-logo">Deriverse Analytics</div>
+                </div>
+                <nav className="sidebar-nav">
+                    <div
+                        className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('overview')}
+                    >
+                        <span className="nav-icon">📊</span>
+                        Overview
+                    </div>
+                    <div
+                        className={`nav-item ${activeTab === 'journal' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('journal')}
+                    >
+                        <span className="nav-icon">📔</span>
+                        Trade Journal
+                    </div>
+                    <div
+                        className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('analytics')}
+                    >
+                        <span className="nav-icon">📈</span>
+                        Advanced Analytics
+                    </div>
+                </nav>
+            </aside>
+
+            {/* Main Content */}
+            <main className="main-content">
+                <header className="header">
+                    <div className="header-content">
+                        <h1 className="header-title">Trading Analytics Dashboard</h1>
+                        <div className="header-actions">
+                            <span className="text-secondary">Portfolio Value: </span>
+                            <span className={portfolio.totalPnl >= 0 ? 'positive' : 'negative'} style={{ fontWeight: 600 }}>
+                                {formatCurrency(portfolio.totalEquity)}
+                            </span>
+                        </div>
+                    </div>
+                </header>
+
+                <div className="content">
+                    {activeTab === 'overview' && (
+                        <>
+                            {/* Key Metrics Grid */}
+                            <div className="metrics-grid">
+                                <MetricCard
+                                    label="Total PnL"
+                                    value={metrics.totalPnl}
+                                    format="currency"
+                                />
+                                <MetricCard
+                                    label="Win Rate"
+                                    value={metrics.winRate}
+                                    format="percent"
+                                />
+                                <MetricCard
+                                    label="Total Trades"
+                                    value={metrics.totalTrades}
+                                />
+                                <MetricCard
+                                    label="Profit Factor"
+                                    value={metrics.profitFactor.toFixed(2)}
+                                />
+                                <MetricCard
+                                    label="ROI"
+                                    value={metrics.roi}
+                                    format="percent"
+                                />
+                                <MetricCard
+                                    label="Max Drawdown"
+                                    value={-metrics.maxDrawdownPercentage}
+                                    format="percent"
+                                />
+                                <MetricCard
+                                    label="Sharpe Ratio"
+                                    value={metrics.sharpeRatio?.toFixed(2) || '0.00'}
+                                />
+                                <MetricCard
+                                    label="Risk Score"
+                                    value={riskMetrics.riskScore}
+                                />
+                            </div>
+
+                            {/* Equity Curve */}
+                            <EquityCurveChart
+                                equityData={equityCurveData.equity}
+                                drawdownData={equityCurveData.drawdown}
+                            />
+
+                            {/* Performance Breakdown */}
+                            <div className="grid grid-2">
+                                <div className="card">
+                                    <h3 className="card-title">Win/Loss Analysis</h3>
+                                    <div style={{ marginTop: 'var(--space-4)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Winning Trades:</span>
+                                            <span className="positive">{metrics.winningTrades}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Losing Trades:</span>
+                                            <span className="negative">{metrics.losingTrades}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Average Win:</span>
+                                            <span className="positive">{formatCurrency(metrics.averageWin)}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Average Loss:</span>
+                                            <span className="negative">{formatCurrency(metrics.averageLoss)}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Largest Win:</span>
+                                            <span className="positive">{formatCurrency(metrics.largestWin)}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <span className="text-secondary">Largest Loss:</span>
+                                            <span className="negative">{formatCurrency(metrics.largestLoss)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="card">
+                                    <h3 className="card-title">Risk & Position Analysis</h3>
+                                    <div style={{ marginTop: 'var(--space-4)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Long Trades:</span>
+                                            <span>{metrics.longTrades}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Short Trades:</span>
+                                            <span>{metrics.shortTrades}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Long/Short Ratio:</span>
+                                            <span>{metrics.longShortRatio.toFixed(2)}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Consecutive Losses:</span>
+                                            <span className={riskMetrics.consecutiveLosses > 3 ? 'negative' : ''}>{riskMetrics.consecutiveLosses}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
+                                            <span className="text-secondary">Total Fees Paid:</span>
+                                            <span className="text-muted">{formatCurrency(metrics.totalFees)}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <span className="text-secondary">Fee-to-Profit:</span>
+                                            <span className="text-muted">{formatPercent(metrics.feeToProfitRatio)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Symbol Performance */}
+                            <div className="card" style={{ marginTop: 'var(--space-6)' }}>
+                                <h3 className="card-title">Performance by Symbol</h3>
+                                <div className="table-container">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Symbol</th>
+                                                <th>Trades</th>
+                                                <th>Win Rate</th>
+                                                <th>Total PnL</th>
+                                                <th>Avg PnL</th>
+                                                <th>Volume</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {symbolPerformance.map(sp => (
+                                                <tr key={sp.symbol}>
+                                                    <td><strong>{sp.symbol}</strong></td>
+                                                    <td>{sp.trades}</td>
+                                                    <td>{formatPercent(sp.winRate)}</td>
+                                                    <td className={sp.totalPnl >= 0 ? 'positive' : 'negative'}>
+                                                        <strong>{formatCurrency(sp.totalPnl)}</strong>
+                                                    </td>
+                                                    <td className={sp.averagePnl >= 0 ? 'positive' : 'negative'}>
+                                                        {formatCurrency(sp.averagePnl)}
+                                                    </td>
+                                                    <td className="text-muted">{formatCurrency(sp.volume, 0)}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {activeTab === 'journal' && (
+                        <TradeJournal trades={trades} />
+                    )}
+
+                    {activeTab === 'analytics' && (
+                        <div className="card">
+                            <h2 className="card-title">Advanced Analytics</h2>
+                            <p className="text-secondary">Additional analytics features coming soon...</p>
+                        </div>
+                    )}
+                </div>
+            </main>
+        </div>
+    );
+};
