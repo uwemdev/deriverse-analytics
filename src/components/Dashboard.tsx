@@ -21,19 +21,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
 
     // Calculate metrics
     const metrics: PerformanceMetrics = useMemo(() => {
-        return calculatePerformanceMetrics(trades, portfolio.initialCapital);
-    }, [trades, portfolio]);
+        return calculatePerformanceMetrics(trades, 10000);
+    }, [trades]);
 
-    const equityCurve = useMemo(() => {
-        return calculateEquityCurve(trades, portfolio.initialCapital);
-    }, [trades, portfolio]);
+    const equityCurveData = useMemo(() => {
+        return calculateEquityCurve(trades, 10000);
+    }, [trades]);
 
-    const symbolStats = useMemo(() => {
+    const symbolPerformance = useMemo(() => {
         return analyzeBySymbol(trades);
     }, [trades]);
 
     const riskMetrics = useMemo(() => {
-        return getRiskMetrics(trades, metrics);
+        return getRiskMetrics(trades, { totalEquity: portfolio.totalEquity });
     }, [trades, metrics]);
 
     // Toggle mobile menu
