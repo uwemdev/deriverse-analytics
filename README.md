@@ -18,6 +18,8 @@ This is a comprehensive trading analytics solution built for active traders on D
 
 ## ✨ Features
 
+**[🎯 Live Demo](#)** | **[📁 GitHub Repository](#)**
+
 ### Performance Metrics Engine
 - ✅ Total PnL tracking (realized + unrealized)
 - ✅ ROI and return percentages
@@ -191,6 +193,35 @@ Professional dark trading theme with:
 - **Defensive Programming**: Null checks, edge case handling
 - **Clean Code**: Modular architecture, single responsibility
 - **Performance**: Memoized calculations, efficient React patterns
+
+## 🚀 Deployment
+
+This project is optimized for deployment on **Vercel**:
+
+### Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=YOUR_GITHUB_REPO_URL)
+
+### Manual Deployment
+
+1. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy the `dist/` folder** to your hosting platform:
+   - **Vercel**: `vercel --prod`
+   - **Netlify**: Drag & drop `dist/` folder
+   - **GitHub Pages**: Use `gh-pages` package
+
+### Environment Variables
+
+No environment variables required for the demo version. For Solana integration:
+
+```env
+VITE_DERIVERSE_RPC_URL=your_solana_rpc_url
+VITE_DERIVERSE_PROGRAM_ID=deriverse_program_id
+```
 
 ## 📈 Future Enhancements
 
