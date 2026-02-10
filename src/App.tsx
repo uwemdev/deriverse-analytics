@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { SplashScreen } from './components/SplashScreen';
 import { LoadingState } from './components/LoadingState';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { generateCompleteDataset } from './data/mockDataGenerator';
 import './styles/theme.css';
 import './styles/components.css';
@@ -28,9 +29,11 @@ function App() {
   }
 
   return (
-    <div className="dashboard-content">
-      <Dashboard trades={trades} portfolio={portfolio} />
-    </div>
+    <ThemeProvider>
+      <div className="dashboard-content">
+        <Dashboard trades={trades} portfolio={portfolio} />
+      </div>
+    </ThemeProvider>
   );
 }
 

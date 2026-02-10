@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import type { Trade, Portfolio, PerformanceMetrics } from '../models';
-import { DollarSign, Target, TrendingUp, Scale, BarChart3, TrendingDown, Activity, Dices } from 'lucide-react';
+import { DollarSign, Target, TrendingUp, Scale, BarChart3, TrendingDown, Activity, Dices, LayoutDashboard, BookOpen, LineChart, Menu, X } from 'lucide-react';
 import { calculatePerformanceMetrics, calculateEquityCurve } from '../core/performanceEngine';
 import { analyzeBySymbol } from '../core/tradeAnalyticsEngine';
 import { getRiskMetrics } from '../core/riskEngine';
 import { MetricCard } from './MetricCard';
 import { EquityCurveChart } from './EquityCurveChart';
 import { TradeJournal } from './TradeJournal';
+import { ThemeToggle } from './ThemeToggle';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 
 interface DashboardProps {
@@ -16,52 +17,91 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
     const [activeTab, setActiveTab] = useState<'overview' | 'journal' | 'analytics'>('overview');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // Calculate all metrics
+    // Calculate metrics
     const metrics: PerformanceMetrics = useMemo(() => {
-        return calculatePerformanceMetrics(trades, 10000);
-    }, [trades]);
+        return calculatePerformanceMetrics(trades, portfolio.initialCapital);
+    }, [trades, portfolio]);
 
-    const equityCurveData = useMemo(() => {
-        return calculateEquityCurve(trades, 10000);
-    }, [trades]);
+    const equityCurve = useMemo(() => {
+        return calculateEquityCurve(trades, portfolio.initialCapital);
+    }, [trades, portfolio]);
 
-    const symbolPerformance = useMemo(() => {
+    const symbolStats = useMemo(() => {
         return analyzeBySymbol(trades);
     }, [trades]);
 
     const riskMetrics = useMemo(() => {
-        return getRiskMetrics(trades, { totalEquity: portfolio.totalEquity });
-    }, [trades, portfolio]);
+        return getRiskMetrics(trades, metrics);
+    }, [trades, metrics]);
+
+    // Toggle mobile menu
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    // Close mobile menu when navigating
+    const handleTabChange = (tab: 'overview' | 'journal' | 'analytics') => {
+        setActiveTab(tab);
+        setIsMobileMenuOpen(false);
+    };
 
     return (
         <div className="dashboard">
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div className="mobile-overlay active" onClick={toggleMobileMenu}></div>
+            )}
+
             {/* Sidebar */}
-            <aside className="sidebar">
+            <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''} `}>
                 <div className="sidebar-header">
-                    <div className="sidebar-logo">Deriverse Analytics</div>
+                    <div className="sidebar-logo-container">
+                        <div className="sidebar-logo-icon">D</div>
+                        <div className="sidebar-logo-text">
+                            <div className="sidebar-logo-title">Deriverse</div>
+                            <div className="sidebar-logo-subtitle">Analytics</div>
+                        </div>
+                    </div>
+                    {isMobileMenuOpen && (
+                        <button
+                            onClick={toggleMobileMenu}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: 'var(--text-secondary)',
+                                padding: '0.5rem'
+                            }}
+                        >
+                            <X size={24} />
+                        </button>
+                    )}
                 </div>
                 <nav className="sidebar-nav">
                     <div
-                        className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('overview')}
+                        className={`nav - item ${activeTab === 'overview' ? 'active' : ''} `}
+                        onClick={() => handleTabChange('overview')}
                     >
-                        <span className="nav-icon">📊</span>
-                        Overview
+                        <LayoutDashboard size={20} className="nav-icon" />
+                        <span>Overview</span>
                     </div>
                     <div
-                        className={`nav-item ${activeTab === 'journal' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('journal')}
+                        className={`nav - item ${activeTab === 'journal' ? 'active' : ''} `}
+                        onClick={() => handleTabChange('journal')}
                     >
-                        <span className="nav-icon">📔</span>
-                        Trade Journal
+                        <BookOpen size={20} className="nav-icon" />
+                        <span>Trade Journal</span>
                     </div>
                     <div
-                        className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('analytics')}
+                        className={`nav - item ${activeTab === 'analytics' ? 'active' : ''} `}
+                        onClick={() => handleTabChange('analytics')}
                     >
-                        <span className="nav-icon">📈</span>
-                        Advanced Analytics
+                        <LineChart size={20} className="nav-icon" />
+                        <span>Advanced Analytics</span>
                     </div>
                 </nav>
             </aside>
@@ -70,12 +110,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
             <main className="main-content">
                 <header className="header">
                     <div className="header-content">
-                        <h1 className="header-title">Trading Analytics Dashboard</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+                            <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+                                <Menu size={24} />
+                            </button>
+                            <h1 className="header-title">Trading Analytics Dashboard</h1>
+                        </div>
                         <div className="header-actions">
                             <span className="text-secondary">Portfolio Value: </span>
-                            <span className={portfolio.totalPnl >= 0 ? 'positive' : 'negative'} style={{ fontWeight: 600 }}>
+                            <span className={portfolio.totalPnl >= 0 ? 'positive' : 'negative'} style={{ fontWeight: 700, fontSize: 'var(--font-scale-md)' }}>
                                 {formatCurrency(portfolio.totalEquity)}
                             </span>
+                            <ThemeToggle />
                         </div>
                     </div>
                 </header>
