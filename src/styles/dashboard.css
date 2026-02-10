@@ -162,18 +162,19 @@
     box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
 }
 
-.nav-item .nav-icon {
+.nav-item svg {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
     transition: all var(--transition-base);
+    stroke-width: 2.5;
 }
 
-.nav-item:hover .nav-icon {
+.nav-item:hover svg {
     transform: scale(1.1);
 }
 
-.nav-item.active .nav-icon {
+.nav-item.active svg {
     color: var(--color-primary);
     filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.4));
 }

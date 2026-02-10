@@ -83,24 +83,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
                 </div>
                 <nav className="sidebar-nav">
                     <div
-                        className={`nav - item ${activeTab === 'overview' ? 'active' : ''} `}
+                        className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
                         onClick={() => handleTabChange('overview')}
                     >
-                        <LayoutDashboard size={20} className="nav-icon" />
+                        <LayoutDashboard size={24} strokeWidth={2.5} />
                         <span>Overview</span>
                     </div>
                     <div
-                        className={`nav - item ${activeTab === 'journal' ? 'active' : ''} `}
+                        className={`nav-item ${activeTab === 'journal' ? 'active' : ''}`}
                         onClick={() => handleTabChange('journal')}
                     >
-                        <BookOpen size={20} className="nav-icon" />
+                        <BookOpen size={24} strokeWidth={2.5} />
                         <span>Trade Journal</span>
                     </div>
                     <div
-                        className={`nav - item ${activeTab === 'analytics' ? 'active' : ''} `}
+                        className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
                         onClick={() => handleTabChange('analytics')}
                     >
-                        <LineChart size={20} className="nav-icon" />
+                        <LineChart size={24} strokeWidth={2.5} />
                         <span>Advanced Analytics</span>
                     </div>
                 </nav>
