@@ -1,61 +1,42 @@
 /* Global Theme Variables */
 :root {
-  /* Enhanced Background Colors with Depth */
-  --bg-primary: #0a0e27;
-  --bg-secondary: #1a1f3a;
-  --bg-tertiary: #1a2332;
-  /* Kept from original as not explicitly replaced */
-  --bg-card: #151933;
-  --bg-hover: #1f2447;
-  /* New */
-  --bg-elevated: #1d2340;
-  /* New */
+  /* Professional Trading Terminal Colors - Dark Theme */
+  --bg-primary: #0b0e11;
+  --bg-secondary: #131619;
+  --bg-card: #16191d;
+  --bg-hover: #1a1e23;
+  --bg-elevated: #1d2126;
 
-  /* Border Colors with Gradients */
-  --border-color: #1e293b;
-  --border-hover: #2d3e5a;
-  /* Kept from original as not explicitly replaced */
-  --border-bright: rgba(59, 130, 246, 0.3);
-  /* New */
+  /* Enhanced Text Colors - Better Contrast */
+  --text-primary: #ffffff;
+  --text-secondary: #a0aec0;
+  --text-muted: #718096;
 
-  /* Enhanced Text Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
+  /* Borders - Subtle and Professional */
+  --border-color: #2d3748;
+  --border-bright: #4a5568;
 
-  /* Premium Theme Gradients (replacing old accent colors and some gradients) */
-  --color-primary: #3b82f6;
-  /* New */
-  --color-secondary: #8b5cf6;
-  /* New */
-  --color-accent: #06b6d4;
-  /* New */
-  --gradient-primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  /* Replaced */
-  --gradient-success: linear-gradient(135deg, #10b981, #059669);
-  /* New, similar to old profit */
-  --gradient-danger: linear-gradient(135deg, #ef4444, #dc2626);
-  /* New, similar to old loss */
-  --gradient-rainbow: linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%);
-  /* New */
+  /* Professional Theme Colors - No Rainbows */
+  --color-primary: #2563eb;
+  --color-secondary: #475569;
+  --color-accent: #0ea5e9;
 
-  /* Trading Colors with Glow */
-  --color-profit: #10b981;
+  /* Trading Colors - Classic Terminal Style */
+  --color-profit: #22c55e;
   --color-loss: #ef4444;
-  --glow-profit: 0 0 20px rgba(16, 185, 129, 0.3);
-  /* New */
-  --glow-loss: 0 0 20px rgba(239, 68, 68, 0.3);
-  /* New */
+  --color-profit-muted: #16a34a;
+  --color-loss-muted: #dc2626;
+
+  /* Subtle Glows - Not AI-ish */
+  --glow-profit-subtle: 0 0 12px rgba(34, 197, 94, 0.15);
+  --glow-loss-subtle: 0 0 12px rgba(239, 68, 68, 0.15);
+  --glow-primary-subtle: 0 0 12px rgba(37, 99, 235, 0.15);
 
   /* Status Colors */
-  --color-success: #10b981;
-  /* New */
+  --color-success: #22c55e;
   --color-warning: #f59e0b;
-  /* New */
   --color-danger: #ef4444;
-  /* New */
   --color-info: #3b82f6;
-  /* New */
   --color-neutral: #6b7280;
 
 
@@ -82,6 +63,28 @@
   /* 32px */
   --space-10: 2.5rem;
   /* 40px */
+  /* Professional Typography Scale - Larger & Bolder */
+  --font-base: 16px;
+  --font-scale-xs: 0.813rem;
+  /* 13px */
+  --font-scale-sm: 0.938rem;
+  /* 15px */
+  --font-scale-md: 1.125rem;
+  /* 18px */
+  --font-scale-lg: 1.375rem;
+  /* 22px */
+  --font-scale-xl: 1.75rem;
+  /* 28px */
+  --font-scale-2xl: 2.25rem;
+  /* 36px */
+  --font-scale-3xl: 3rem;
+  /* 48px */
+
+  /* Font Weights - Professional */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Border Radius */
   --radius-sm: 0.25rem;

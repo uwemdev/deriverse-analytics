@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import type { Trade, Portfolio, PerformanceMetrics } from '../models';
+import { DollarSign, Target, TrendingUp, Scale, BarChart3, TrendingDown, Activity, Dices } from 'lucide-react';
 import { calculatePerformanceMetrics, calculateEquityCurve } from '../core/performanceEngine';
 import { analyzeBySymbol } from '../core/tradeAnalyticsEngine';
 import { getRiskMetrics } from '../core/riskEngine';
@@ -89,52 +90,52 @@ export const Dashboard: React.FC<DashboardProps> = ({ trades, portfolio }) => {
                                     value={metrics.totalPnl}
                                     format="currency"
                                     trend={metrics.totalPnl >= 0 ? 'up' : 'down'}
-                                    icon="💰"
+                                    icon={DollarSign}
                                 />
                                 <MetricCard
                                     title="Win Rate"
                                     value={metrics.winRate}
                                     format="percent"
                                     trend={metrics.winRate >= 0.5 ? 'up' : 'down'}
-                                    icon="🎯"
+                                    icon={Target}
                                 />
                                 <MetricCard
                                     title="Total Trades"
                                     value={metrics.totalTrades}
                                     trend="neutral"
-                                    icon="📊"
+                                    icon={BarChart3}
                                 />
                                 <MetricCard
                                     title="Profit Factor"
                                     value={metrics.profitFactor.toFixed(2)}
                                     trend={metrics.profitFactor > 1 ? 'up' : 'down'}
-                                    icon="⚖️"
+                                    icon={Scale}
                                 />
                                 <MetricCard
                                     title="ROI"
                                     value={metrics.roi}
                                     format="percent"
                                     trend={metrics.roi >= 0 ? 'up' : 'down'}
-                                    icon="📈"
+                                    icon={TrendingUp}
                                 />
                                 <MetricCard
                                     title="Max Drawdown"
                                     value={-metrics.maxDrawdownPercentage}
                                     format="percent"
                                     trend="down"
-                                    icon="📉"
+                                    icon={TrendingDown}
                                 />
                                 <MetricCard
                                     title="Sharpe Ratio"
                                     value={metrics.sharpeRatio?.toFixed(2) || 'N/A'}
                                     trend={metrics.sharpeRatio && metrics.sharpeRatio > 1 ? 'up' : 'neutral'}
-                                    icon="📐"
+                                    icon={Activity}
                                 />
                                 <MetricCard
                                     title="Risk Score"
                                     value={riskMetrics.riskScore.toFixed(0)}
                                     trend={riskMetrics.riskScore < 50 ? 'up' : 'down'}
-                                    icon="🎲"
+                                    icon={Dices}
                                 />
                             </div>
 
