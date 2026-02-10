@@ -18,7 +18,7 @@ This is a comprehensive trading analytics solution built for active traders on D
 
 ## ✨ Features
 
-**[🎯 Live Demo](#)** | **[📁 GitHub Repository](#)**
+**[🎯 Live Demo](#)** | **[📁 GitHub Repository](https://github.com/uwemdev/deriverse-analytics)**
 
 ### Performance Metrics Engine
 - ✅ Total PnL tracking (realized + unrealized)
@@ -200,7 +200,7 @@ This project is optimized for deployment on **Vercel**:
 
 ### Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=YOUR_GITHUB_REPO_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/uwemdev/deriverse-analytics)
 
 ### Manual Deployment
 
