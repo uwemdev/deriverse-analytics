@@ -3,7 +3,7 @@ import { Dashboard } from './components/Dashboard';
 import { SplashScreen } from './components/SplashScreen';
 import { LoadingState } from './components/LoadingState';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { generateCompleteDataset } from './data/mockDataGenerator';
+import { generateCompleteDataset } from "./data/tradeDataService";
 import './styles/theme.css';
 import './styles/components.css';
 import './styles/dashboard.css';
@@ -13,15 +13,21 @@ function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Generate mock data (simulates loading from Solana/API)
+  // Generate data using the new service
   const { trades, portfolio } = useMemo(() => {
-    // Simulate data loading delay
-    setTimeout(() => setIsLoading(false), 1000);
     return generateCompleteDataset();
   }, []);
 
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    // Simulate loading data
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  };
+
   if (showSplash) {
-    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+    return <SplashScreen onComplete={handleSplashComplete} />;
   }
 
   if (isLoading) {
