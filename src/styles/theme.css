@@ -175,7 +175,7 @@
   --transition-slow: 400ms ease-in-out;
 
   /* Layout */
-  --sidebar-width: 280px;
+  --sidebar-width: 320px;
   --sidebar-collapsed-width: 70px;
   --header-height: 70px;
 }
