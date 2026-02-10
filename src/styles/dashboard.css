@@ -418,6 +418,17 @@
         transform: translateX(0);
     }
 
+    /* CRITICAL: Show text labels on mobile (override tablet hiding) */
+    .sidebar .nav-item span {
+        display: inline !important;
+        color: inherit !important;
+    }
+
+    /* Ensure logo text is visible on mobile */
+    .sidebar-logo-text {
+        display: flex !important;
+    }
+
     /* Ensure text is visible on mobile sidebar */
     .sidebar-logo-title {
         color: var(--text-primary) !important;
@@ -437,14 +448,6 @@
 
     .sidebar .nav-item.active {
         color: var(--color-primary) !important;
-    }
-
-    .sidebar .nav-item span {
-        color: inherit !important;
-    }
-
-    .sidebar-logo-text {
-        display: flex;
     }
 
     .main-content {
